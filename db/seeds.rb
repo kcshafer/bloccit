@@ -26,6 +26,14 @@ end
         )
 end
 
+10.times do
+    Question.create!(
+        title: RandomData.random_sentence,
+        body: RandomData.random_paragraph,
+        resolved: false
+    )
+end
+
 Comment.find_or_create_by(post: p,body: 'A unique comment body')
 
 puts "Seed finished"
