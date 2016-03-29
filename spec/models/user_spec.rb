@@ -22,11 +22,50 @@
      
         describe "attributes" do
             it "should respond to name" do
-            expect(user).to respond_to(:name)
+                expect(user).to respond_to(:name)
+            end
+
+            it "should respond to email" do
+                expect(user).to respond_to(:email)
+            end
+            
+            it "responds to role" do
+                expect(user).to respond_to(:role)
+            end
+
+            it "responds to member?" do
+                expect(user).to respond_to(:member?)
+            end
         end
-     
-        it "should respond to email" do
-            expect(user).to respond_to(:email)
+
+        describe "roles" do
+            it "is member by default" do
+                expect(user.role).to eql("member")
+            end
+
+            context "member user" do
+                it "returns true for #member?" do
+                    expect(user.member?).to be_truthy
+                end
+ 
+                it "returns false for #admin?" do
+                    expect(user.admin?).to be_falsey
+                end
+            end
+
+            context "admin user" do
+                before do
+                    user.admin!
+                end
+ 
+                it "returns false for #member?" do
+                    expect(user.member?).to be_falsey
+                end
+ 
+                it "returns true for #admin?" do
+                    expect(user.admin?).to be_truthy
+                end
+            end
         end
 
         describe "invalid user" do
@@ -42,4 +81,3 @@
             end
         end
     end
- end

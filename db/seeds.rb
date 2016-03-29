@@ -6,8 +6,8 @@ require 'random_data'
         email:    RandomData.random_email,
         password: RandomData.random_sentence
     )
- end
- users = User.all
+end
+users = User.all
 
 15.times do
     Topic.create!(
@@ -65,9 +65,16 @@ end
 
 Comment.find_or_create_by(post: p,body: 'A unique comment body')
 
-user = User.first
-user.update_attributes!(
-    email: 'youremail.com', # replace this with your personal email
+admin = User.create!(
+    name: 'Admin User',
+    email: 'admin@example.com',
+    password: 'helloworld',
+    role: 'admin'
+)
+
+member = User.create!(
+    name: 'Member User',
+    email: 'member@example.com',
     password: 'helloworld'
 )
 
