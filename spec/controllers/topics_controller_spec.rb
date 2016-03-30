@@ -272,4 +272,37 @@ RSpec.describe TopicsController, type: :controller do
       end
     end
   end
+
+    context "moderator user" do
+        before do
+            user = User.create!(name: "Bloccit User", email: "user@bloccit.com", password: "helloworld", role: :moderator)
+            create_session(user)
+        end
+
+        describe "GET edit" do
+            it "returns http success" do
+                get :edit, {id: my_topic.id}
+                expect(response).to have_http_status(:success)
+            end
+
+            it "renders the #edit view" do
+                get :edit, {id: my_topic.id}
+                expect(response).to render_template :edit
+            end
+        end
+
+        describe "DELETE destroy" do
+            it "returns http redirect" do
+                delete :destroy, {id: my_topic.id}
+                expect(response).to redirect_to(topics_path)
+            end
+        end
+
+        describe "POST create" do
+            it "returns http redirect" do
+                post :create, topic: {name: RandomData.random_sentence, description: RandomData.random_paragraph}
+                expect(response).to redirect_to(topics_path)
+            end
+        end
+    end
 end
