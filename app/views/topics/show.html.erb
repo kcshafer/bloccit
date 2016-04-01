@@ -9,8 +9,11 @@
 
 <div class="row">
   <div class="col-md-8">
-    <p class="lead"><%= @topic.description %></p>
-    <%= render 'posts/post' %>
+     <p class="lead">
+       <%= render partial: "labels/list", locals: { labels: @topic.labels } %>
+       <br />
+       <%= @topic.description %>
+     </p>    <%= render 'posts/post' %>
     <h4>Sponsored Posts</h4>
     <% @topic.sponsored_posts.each do |sp| %>
       <div class="media">

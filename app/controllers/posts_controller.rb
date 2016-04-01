@@ -3,7 +3,7 @@ class PostsController < ApplicationController
   before_action :authorize_user, except: [:show, :new, :create]
 
   def show
-      @post = Post.find(params[:id])  
+      @post = Post.includes(:labels).find(params[:id])  
   end
 
   def new
@@ -21,6 +21,7 @@ class PostsController < ApplicationController
     @post.user = current_user
     
     if @post.save
+        @post.labels = Label.update_labels(params[:post][:labels])
         flash[:notice] = "Post was saved."
         redirect_to [@topic, @post]
     else
@@ -31,6 +32,7 @@ class PostsController < ApplicationController
 
   def edit
     @post = Post.find(params[:id])
+    @topic = Topic.find(params[:topic_id])
   end
 
   def update
@@ -41,6 +43,7 @@ class PostsController < ApplicationController
 
 
     if @post.save
+        @post.labels = Label.update_labels(params[:post][:labels])
         flash[:notice] = "Post was updated."
         redirect_to [@post.topic, @post]
     else

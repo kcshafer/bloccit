@@ -1,6 +1,8 @@
 class Post < ActiveRecord::Base
     belongs_to :topic
     has_many :comments, dependent: :destroy
+    has_many :labelings, as: :labelable
+    has_many :labels, through: :labelings
     belongs_to :user
 
     validates :title, length: { minimum: 5 }, presence: true
