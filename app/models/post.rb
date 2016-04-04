@@ -1,4 +1,8 @@
+include SessionsHelper
+
 class Post < ActiveRecord::Base
+    after_create :create_vote
+
     belongs_to :topic
     has_many :comments, dependent: :destroy
     has_many :votes, dependent: :destroy
@@ -33,5 +37,15 @@ class Post < ActiveRecord::Base
         puts "new_rank"
         puts new_rank
         update_attribute(:rank, new_rank)
+    end
+
+    private
+
+    def create_vote
+        vote = Vote.new
+        vote.value = 1
+        vote.post = self
+        vote.user = self.user
+        vote.save!
     end
 end 
