@@ -96,4 +96,11 @@ RSpec.describe Post, type: :model do
             expect(post.rank).to eq (old_rank - 1)
         end
     end
+
+    describe "after_create" do
+        it "sends an email to users who have favorited the post" do
+            new_post = topic.posts.create!(title: RandomData.random_sentence, body: RandomData.random_paragraph, user: user)
+            expect(FavoriteMailer).to receive(:new_post).with(post).and_return(double(deliver_now: true))
+        end
+    end
 end

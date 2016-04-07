@@ -124,6 +124,12 @@ RSpec.describe PostsController, type: :controller do
         post = Post.last
         expect(post.up_votes).to eq(1)
       end
+
+      it "creates a favorite on post creation" do
+        post :create, topic_id: my_topic.id, post: {title: RandomData.random_sentence, body: RandomData.random_paragraph}
+        post = Post.last
+        expect(post.favorites.count).to eq(1)
+      end
     end
 
     describe "GET edit" do

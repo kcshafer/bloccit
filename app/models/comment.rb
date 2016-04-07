@@ -1,6 +1,6 @@
 class Comment < ActiveRecord::Base
   	after_create :send_favorite_emails
-  	
+
   	belongs_to :post
   	belongs_to :topic
   	belongs_to :user

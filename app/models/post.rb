@@ -1,7 +1,7 @@
 include SessionsHelper
 
 class Post < ActiveRecord::Base
-    after_create :create_vote
+    after_create :create_vote, :create_favorite, :send_post_email
 
     belongs_to :topic
     belongs_to :user
@@ -50,5 +50,13 @@ class Post < ActiveRecord::Base
         vote.post = self
         vote.user = self.user
         vote.save!
+    end
+
+    def create_favorite
+        Favorite.create(:user=>self.user, :post=>self)
+    end
+
+    def send_post_email
+        FavoriteMailer.new_post(self)
     end
 end 
