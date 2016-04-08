@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     resources :labels, only: [:show]
     resources :questions
     resources :advertisements
-    resources :users, only: [:new, :create]
+    resources :users, only: [:new, :create, :show]
     resources :sessions, only: [:new, :create, :destroy]
 
     resources :topics do

@@ -10,12 +10,8 @@ RSpec.describe Topic, type: :model do
     it { is_expected.to have_many(:labels).through(:labelings) }
 
     describe "attributes" do
-        it "responds to name" do
-            expect(topic).to respond_to(:name)
-        end
-
-        it "responds to description" do
-            expect(topic).to respond_to(:description)
+        it "responds to name and description attributes" do
+            expect(topic).to have_attributes(name: topic.name, description: topic.description)
         end
 
         it "responds to public" do
