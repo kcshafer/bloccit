@@ -13,7 +13,8 @@
        <%= render partial: "labels/list", locals: { labels: @topic.labels } %>
        <br />
        <%= @topic.description %>
-     </p>    <%= render 'posts/post' %>
+     </p>    
+     <%= render @topic.posts %>
     <h4>Sponsored Posts</h4>
     <% @topic.sponsored_posts.each do |sp| %>
       <div class="media">

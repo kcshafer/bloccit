@@ -1,0 +1,6 @@
+<% favorites.each do |f| %>
+	<%= f.post.title %>
+	<%= image_tag f.post.user.avatar_url(48), class: "gravatar" %>
+	<%= f.post.points %> points
+	<%= f.post.comments.count %> comments
+<% end %>
