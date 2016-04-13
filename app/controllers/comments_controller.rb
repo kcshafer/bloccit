@@ -1,22 +1,39 @@
 class CommentsController < ApplicationController
     before_action :require_sign_in
     before_action :authorize_user, only: [:destroy]
+    
     def create
-        comment = Comment.new(comment_params)
-        comment.user = current_user
+        puts "calling create"
+        @post = Post.find(params[:post_id])
+        @comment = @post.comments.new(comment_params)
+        @comment.user = current_user
+        @new_comment = Comment.new
+        
+        if @comment.save
+            flash[:notice] = "Comment saved successfully."
+        else
+            flash[:alert] = "Comment failed to save."
+        end
 
-        if params.key? :post_id
-            create_post_comment(comment)
-        elsif params.key? :topic_id
-            create_topic_comment(comment)
-        end         
+        respond_to do |format|
+            format.html
+            format.js
+        end
     end
 
     def destroy
-        if params.key? :post_id
-            destroy_post_comment
-        elsif params.key? :topic_id
-            destroy_topic_comment
+        @post = Post.find(params[:post_id])
+        @comment = @post.comments.find(params[:id])
+
+        if @comment.destroy
+            flash[:notice] = "Comment was deleted."
+        else
+            flash[:alert] = "Comment couldn't be deleted. Try again."
+        end
+
+        respond_to do |format|
+            format.html
+            format.js
         end
     end
 
@@ -42,28 +59,6 @@ class CommentsController < ApplicationController
             do_redirect([@post.topic, @post], :notice, "Comment saved successfully")
         else
             do_redirect([@post.topic, @post], :alert, "Comment failed to save.")
-        end
-    end
-
-    def create_topic_comment(comment)
-        @topic = Topic.find(params[:topic_id])
-        comment.topic_id = @topic.id
-
-        if comment.save
-            do_redirect([@topic], :notice, "Comment saved successfully.")
-        else
-            do_redirect([@topic], :alert, "Comment failed to save.")
-        end
-    end
-
-    def destroy_topic_comment
-        @topic = Topic.find(params[:topic_id])
-        comment = @topic.comments.find(params[:id])
-
-        if comment.destroy
-            do_redirect([@topic], :notice, "Comment was deleted")
-        else
-            do_redirect([@topic], :alert, "Comment couldn't be deleted. Try again")
         end
     end
 
