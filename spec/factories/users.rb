@@ -8,5 +8,6 @@ FactoryGirl.define do
      	password pw
      	password_confirmation pw
      	role :member
+     	auth_token "12345"
    	end
  end
